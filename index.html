@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jurnal Umum - Modern Dark</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f0f11;
+            --bg-secondary: #18181b;
+            --bg-tertiary: #27272a;
+            --bg-card: rgba(39, 39, 42, 0.6);
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-cyan: #06b6d4;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-gradient::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+            animation: gradientMove 20s ease-in-out infinite;
+        }
+
+        @keyframes gradientMove {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(30px, -30px) rotate(5deg);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) rotate(-5deg);
+            }
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-primary);
+            top: 10%;
+            left: 10%;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-secondary);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent-cyan);
+            bottom: 10%;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            75% {
+                transform: translate(20px, 10px) scale(1.05);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent-cyan);
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .card:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item.warning::before {
+            background: var(--accent-danger);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-item.warning .stat-value {
+            color: var(--accent-danger);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .suggestion-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 16px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .suggestion-box.show {
+            display: block;
+        }
+
+        .suggestion-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .keyword-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent-primary);
+            margin: 2px;
+        }
+
+        .suggestion-detail {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .suggestion-detail strong {
+            color: var(--text-primary);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent-success), #059669);
+            color: white;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--accent-danger), #dc2626);
+            color: white;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+
+        .file-wrapper {
+            position: relative;
+            display: inline-block;
+            flex: 1;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 800px;
+        }
+
+        thead {
+            background: var(--bg-tertiary);
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .debit-text {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .credit-text {
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .amount {
+            font-family: 'Inter', monospace;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: right;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .empty-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn-delete {
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-danger);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-success);
+        }
+
+        .toast.error .toast-icon {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-danger);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .modal-message {
+            font-size: 13px;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .header h1 {
+                font-size: 48px;
+            }
+
+            .toast {
+                left: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .file-wrapper {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="container">
+        <header class="header">
+            <div class="header-badge">
+                <span></span>
+                Pembuat Jurnal Umum Otomatis
+            </div>
+            <h1>AutoJurnal</h1>
+            <p>Catat Transaksi. Jurnal Terbentuk Otomatis</p>
+        </header>
+        <div class="card">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalTransaksi">0</div>
+                    <div class="stat-label">Total Transaksi</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalDebit">Rp 0</div>
+                    <div class="stat-label">Total Debit</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalKredit">Rp 0</div>
+                    <div class="stat-label">Total Kredit</div>
+                </div>
+                <div class="stat-item" id="statusItem">
+                    <div class="stat-value" id="statusBalance">Seimbang</div>
+                    <div class="stat-label">Status Neraca</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">✎</div>
+                <div>
+                    <div class="card-title">Input Transaksi</div>
+                    <div class="card-subtitle">Masukkan detail transaksi secara manual</div>
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>📅</span>
+                        Tanggal Transaksi
+                    </label>
+                    <input type="date" class="form-input" id="tanggal" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>💰</span>
+                        Nominal (Rp)
+                    </label>
+                    <input type="number" class="form-input" id="nominal" placeholder="0" min="0" required>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 8px;">
+                <label class="form-label">
+                    <span>📝</span>
+                    Deskripsi Transaksi
+                </label>
+                <textarea class="form-input" id="deskripsi"
+                    placeholder="Contoh: Pembelian perlengkapan kantor secara tunai..." required></textarea>
+            </div>
+            <div class="suggestion-box" id="suggestionBox">
+                <div class="suggestion-title">Analisis Otomatis</div>
+                <div id="detectedKeywords"></div>
+                <div class="suggestion-detail" id="suggestionDetail"></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="tambahTransaksi()">
+                    <span>+</span>
+                    Tambah Transaksi
+                </button>
+                <button class="btn btn-secondary" onclick="resetForm()">
+                    <span>↺</span>
+                    Reset
+                </button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">📁</div>
+                <div>
+                    <div class="card-title">Import Data</div>
+                    <div class="card-subtitle">Unggah file Excel untuk input batch</div>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px; line-height: 1.6;">
+                Format file: Kolom A (Tanggal), Kolom B (Deskripsi), Kolom C (Nominal).
+                Sistem akan otomatis mendeteksi akun debit dan kredit berdasarkan kata kunci.
+            </p>
+            <div class="btn-group" style="margin-bottom: 0;">
+                <div class="file-wrapper">
+                    <input type="file" id="excelFile" class="file-input" accept=".xlsx, .xls"
+                        onchange="importExcel(this)">
+                    <label for="excelFile" class="file-label">
+                        <span>📂</span>
+                        Pilih File Excel
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="downloadTemplate()">
+                    <span>⬇</span>
+                    Download Template
+                </button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">📊</div>
+                <div>
+                    <div class="card-title">Daftar Jurnal</div>
+                    <div class="card-subtitle">Ringkasan semua transaksi tercatat</div>
+                </div>
+            </div>
+            <div class="btn-group" style="margin-bottom: 20px;">
+                <button class="btn btn-success" onclick="exportToExcel()">
+                    <span>⬇</span>
+                    Export Excel
+                </button>
+                <button class="btn btn-danger" onclick="hapusSemua()">
+                    <span>🗑</span>
+                    Hapus Semua
+                </button>
+            </div>
+            <div class="table-container">
+                <table id="jurnalTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Deskripsi</th>
+                            <th>Akun Debit</th>
+                            <th style="text-align: right;">Debit</th>
+                            <th>Akun Kredit</th>
+                            <th style="text-align: right;">Kredit</th>
+                            <th style="text-align: center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jurnalBody">
+                        <tr>
+                            <td colspan="8">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📭</div>
+                                    <div class="empty-title">Belum ada data</div>
+                                    <div class="empty-desc">Silakan tambah transaksi manual atau import dari Excel</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="toast" class="toast">
+        <div class="toast-icon">✓</div>
+        <div class="toast-content">
+            <div class="toast-title">Berhasil</div>
+            <div class="toast-message">Data telah disimpan</div>
+        </div>
+    </div>
+    <div id="modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-icon">⚠</div>
+            <div class="modal-title">Konfirmasi</div>
+            <div class="modal-message">Apakah Anda yakin ingin melanjutkan?</div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                <button class="btn btn-danger" id="modalConfirm">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let jurnalData = [];
+        let idCounter = 1;
+        const aturanAkuntansi = {
+            'beli': {
+                'tunai': { debit: 'Perlengkapan', kredit: 'Kas' },
+                'kontan': { debit: 'Perlengkapan', kredit: 'Kas' },
+                'default': { debit: 'Perlengkapan', kredit: 'Utang Dagang' }
+            },
+            'pembelian': {
+                'tunai': { debit: 'Perlengkapan', kredit: 'Kas' },
+                'kontan': { debit: 'Perlengkapan', kredit: 'Kas' },
+                'default': { debit: 'Perlengkapan', kredit: 'Utang Dagang' }
+            },
+            'jual': {
+                'tunai': { debit: 'Kas', kredit: 'Pendapatan Penjualan' },
+                'kontan': { debit: 'Kas', kredit: 'Pendapatan Penjualan' },
+                'default': { debit: 'Piutang Dagang', kredit: 'Pendapatan Penjualan' }
+            },
+            'penjualan': {
+                'tunai': { debit: 'Kas', kredit: 'Pendapatan Penjualan' },
+                'kontan': { debit: 'Kas', kredit: 'Pendapatan Penjualan' },
+                'default': { debit: 'Piutang Dagang', kredit: 'Pendapatan Penjualan' }
+            },
+            'terima': {
+                'piutang': { debit: 'Kas', kredit: 'Piutang Dagang' },
+                'default': { debit: 'Kas', kredit: 'Pendapatan' }
+            },
+            'pelunasan': {
+                'piutang': { debit: 'Kas', kredit: 'Piutang Dagang' },
+                'default': { debit: 'Kas', kredit: 'Piutang Dagang' }
+            },
+            'bayar': {
+                'gaji': { debit: 'Beban Gaji', kredit: 'Kas' },
+                'sewa': { debit: 'Beban Sewa', kredit: 'Kas' },
+                'listrik': { debit: 'Beban Listrik', kredit: 'Kas' },
+                'air': { debit: 'Beban Air', kredit: 'Kas' },
+                'telepon': { debit: 'Beban Telepon', kredit: 'Kas' },
+                'internet': { debit: 'Beban Internet', kredit: 'Kas' },
+                'utang': { debit: 'Utang Dagang', kredit: 'Kas' },
+                'default': { debit: 'Beban Operasional', kredit: 'Kas' }
+            },
+            'pembayaran': {
+                'gaji': { debit: 'Beban Gaji', kredit: 'Kas' },
+                'sewa': { debit: 'Beban Sewa', kredit: 'Kas' },
+                'listrik': { debit: 'Beban Listrik', kredit: 'Kas' },
+                'air': { debit: 'Beban Air', kredit: 'Kas' },
+                'telepon': { debit: 'Beban Telepon', kredit: 'Kas' },
+                'internet': { debit: 'Beban Internet', kredit: 'Kas' },
+                'utang': { debit: 'Utang Dagang', kredit: 'Kas' },
+                'default': { debit: 'Beban Operasional', kredit: 'Kas' }
+            },
+            'setor': {
+                'modal': { debit: 'Kas', kredit: 'Modal Pemilik' },
+                'default': { debit: 'Kas', kredit: 'Modal Pemilik' }
+            },
+            'modal': {
+                'default': { debit: 'Kas', kredit: 'Modal Pemilik' }
+            },
+            'prive': {
+                'default': { debit: 'Prive', kredit: 'Kas' }
+            },
+            'tarik': {
+                'default': { debit: 'Prive', kredit: 'Kas' }
+            },
+            'pinjam': {
+                'default': { debit: 'Kas', kredit: 'Utang Bank' }
+            },
+            'pinjaman': {
+                'default': { debit: 'Kas', kredit: 'Utang Bank' }
+            },
+            'peralatan': {
+                'tunai': { debit: 'Aset Tetap', kredit: 'Kas' },
+                'default': { debit: 'Aset Tetap', kredit: 'Utang Dagang' }
+            },
+            'kendaraan': {
+                'tunai': { debit: 'Aset Tetap', kredit: 'Kas' },
+                'default': { debit: 'Aset Tetap', kredit: 'Utang Dagang' }
+            }
+        };
+        function deteksiAkun(deskripsi) {
+            const lowerDesc = deskripsi.toLowerCase();
+            let hasil = { debit: 'Kas', kredit: 'Pendapatan', keywords: [] };
+            for (let keyword in aturanAkuntansi) {
+                if (lowerDesc.includes(keyword)) {
+                    hasil.keywords.push(keyword);
+                    const aturan = aturanAkuntansi[keyword];
+                    let matched = false;
+                    for (let subKeyword in aturan) {
+                        if (subKeyword !== 'default' && lowerDesc.includes(subKeyword)) {
+                            hasil.debit = aturan[subKeyword].debit;
+                            hasil.kredit = aturan[subKeyword].kredit;
+                            hasil.keywords.push(subKeyword);
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if (!matched && aturan.default) {
+                        hasil.debit = aturan.default.debit;
+                        hasil.kredit = aturan.default.kredit;
+                    }
+                }
+            }
+            return hasil;
+        }
+        document.getElementById('deskripsi').addEventListener('input', function (e) {
+            const deskripsi = e.target.value;
+            const suggestionBox = document.getElementById('suggestionBox');
+            const detectedKeywords = document.getElementById('detectedKeywords');
+            const suggestionDetail = document.getElementById('suggestionDetail');
+            if (deskripsi.length > 3) {
+                const hasil = deteksiAkun(deskripsi);
+                if (hasil.keywords.length > 0) {
+                    let html = '';
+                    hasil.keywords.forEach(kw => {
+                        html += `<span class="keyword-tag">${kw}</span>`;
+                    });
+                    detectedKeywords.innerHTML = html;
+                    suggestionDetail.innerHTML = `<strong>Debit:</strong> ${hasil.debit}<br><strong>Kredit:</strong> ${hasil.kredit}`;
+                    suggestionBox.classList.add('show');
+                } else {
+                    suggestionBox.classList.remove('show');
+                }
+            } else {
+                suggestionBox.classList.remove('show');
+            }
+        });
+        document.getElementById('tanggal').valueAsDate = new Date();
+        function tambahTransaksi() {
+            const tanggal = document.getElementById('tanggal').value;
+            const deskripsi = document.getElementById('deskripsi').value.trim();
+            const nominal = parseFloat(document.getElementById('nominal').value);
+            if (!tanggal || !deskripsi || !nominal || nominal <= 0) {
+                showToast('Harap lengkapi semua field dengan benar.', 'error');
+                return;
+            }
+            const hasilDeteksi = deteksiAkun(deskripsi);
+            const transaksi = {
+                id: idCounter++,
+                tanggal: tanggal,
+                deskripsi: deskripsi,
+                akunDebit: hasilDeteksi.debit,
+                debit: nominal,
+                akunKredit: hasilDeteksi.kredit,
+                kredit: nominal
+            };
+            jurnalData.push(transaksi);
+            renderTabel();
+            updateSummary();
+            resetForm();
+            showToast('Transaksi berhasil ditambahkan ke jurnal.', 'success');
+        }
+        function renderTabel() {
+            const tbody = document.getElementById('jurnalBody');
+            if (jurnalData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">Belum ada data</div><div class="empty-desc">Silakan tambah transaksi manual atau import dari Excel</div></div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = '';
+            jurnalData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.style.animation = `fadeInUp 0.3s ease ${index * 0.05}s both`;
+                row.innerHTML = `
+<td>${index + 1}</td>
+<td>${formatTanggal(item.tanggal)}</td>
+<td>${item.deskripsi}</td>
+<td class="debit-text">${item.akunDebit}</td>
+<td class="amount">Rp ${formatRupiah(item.debit)}</td>
+<td class="credit-text">${item.akunKredit}</td>
+<td class="amount">Rp ${formatRupiah(item.kredit)}</td>
+<td style="text-align: center;"><button class="btn-delete" onclick="hapusTransaksi(${item.id})">Hapus</button></td>
+`;
+                tbody.appendChild(row);
+            });
+        }
+        function formatTanggal(tanggal) {
+            const date = new Date(tanggal);
+            return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+        function formatRupiah(angka) {
+            return angka.toLocaleString('id-ID');
+        }
+        function updateSummary() {
+            const totalTransaksi = jurnalData.length;
+            const totalDebit = jurnalData.reduce((sum, item) => sum + item.debit, 0);
+            const totalKredit = jurnalData.reduce((sum, item) => sum + item.kredit, 0);
+            document.getElementById('totalTransaksi').textContent = totalTransaksi;
+            document.getElementById('totalDebit').textContent = 'Rp ' + formatRupiah(totalDebit);
+            document.getElementById('totalKredit').textContent = 'Rp ' + formatRupiah(totalKredit);
+            const statusEl = document.getElementById('statusBalance');
+            const statusItem = document.getElementById('statusItem');
+            if (totalDebit === totalKredit && totalTransaksi > 0) {
+                statusEl.textContent = 'Seimbang';
+                statusEl.style.color = 'var(--accent-success)';
+                statusItem.classList.remove('warning');
+            } else if (totalTransaksi === 0) {
+                statusEl.textContent = '-';
+                statusEl.style.color = 'var(--text-primary)';
+                statusItem.classList.remove('warning');
+            } else {
+                statusEl.textContent = 'Tidak Seimbang';
+                statusEl.style.color = 'var(--accent-danger)';
+                statusItem.classList.add('warning');
+            }
+        }
+        function hapusTransaksi(id) {
+            showModal('Hapus Transaksi', 'Apakah Anda yakin ingin menghapus transaksi ini?', () => {
+                jurnalData = jurnalData.filter(item => item.id !== id);
+                renderTabel();
+                updateSummary();
+                showToast('Transaksi berhasil dihapus.', 'success');
+            });
+        }
+        function hapusSemua() {
+            if (jurnalData.length === 0) {
+                showToast('Tidak ada data untuk dihapus.', 'error');
+                return;
+            }
+            showModal('Hapus Semua Data', 'Apakah Anda yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan.', () => {
+                jurnalData = [];
+                idCounter = 1;
+                renderTabel();
+                updateSummary();
+                showToast('Semua data berhasil dihapus.', 'success');
+            });
+        }
+        function resetForm() {
+            document.getElementById('tanggal').valueAsDate = new Date();
+            document.getElementById('deskripsi').value = '';
+            document.getElementById('nominal').value = '';
+            document.getElementById('suggestionBox').classList.remove('show');
+        }
+        function importExcel(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    if (jsonData.length < 2) {
+                        showToast('File Excel kosong atau format tidak valid.', 'error');
+                        return;
+                    }
+                    let successCount = 0;
+                    for (let i = 1; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (row.length >= 3) {
+                            let tanggal = row[0];
+                            const deskripsi = String(row[1]).trim();
+                            const nominal = parseFloat(row[2]);
+                            if (typeof tanggal === 'number') {
+                                const excelEpoch = new Date(1899, 11, 30);
+                                tanggal = new Date(excelEpoch.getTime() + tanggal * 24 * 60 * 60 * 1000);
+                                tanggal = tanggal.toISOString().split('T')[0];
+                            } else if (tanggal instanceof Date) {
+                                tanggal = tanggal.toISOString().split('T')[0];
+                            } else {
+                                tanggal = String(tanggal);
+                            }
+                            if (deskripsi && nominal > 0) {
+                                const hasilDeteksi = deteksiAkun(deskripsi);
+                                jurnalData.push({
+                                    id: idCounter++,
+                                    tanggal: tanggal,
+                                    deskripsi: deskripsi,
+                                    akunDebit: hasilDeteksi.debit,
+                                    debit: nominal,
+                                    akunKredit: hasilDeteksi.kredit,
+                                    kredit: nominal
+                                });
+                                successCount++;
+                            }
+                        }
+                    }
+                    renderTabel();
+                    updateSummary();
+                    showToast(`Berhasil import ${successCount} transaksi dari Excel.`, 'success');
+                    input.value = '';
+                } catch (error) {
+                    showToast('Terjadi kesalahan saat membaca file Excel.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        function downloadTemplate() {
+            const template = [
+                ['Tanggal', 'Deskripsi', 'Nominal'],
+                ['2024-01-15', 'Pembelian perlengkapan kantor secara tunai', 500000],
+                ['2024-01-16', 'Penjualan barang dagangan tunai', 1000000],
+                ['2024-01-17', 'Pembayaran gaji karyawan', 2500000],
+                ['2024-01-18', 'Pembelian peralatan kredit', 2000000],
+                ['2024-01-19', 'Penerimaan pelunasan piutang', 1500000]
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(template);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Template Jurnal');
+            XLSX.writeFile(wb, 'Template_Jurnal_Umum.xlsx');
+            showToast('Template Excel berhasil diunduh.', 'success');
+        }
+        function exportToExcel() {
+            if (jurnalData.length === 0) {
+                showToast('Tidak ada data untuk diekspor.', 'error');
+                return;
+            }
+            const exportData = jurnalData.map((item, index) => ({
+                'No': index + 1,
+                'Tanggal': item.tanggal,
+                'Deskripsi': item.deskripsi,
+                'Akun Debit': item.akunDebit,
+                'Debit (Rp)': item.debit,
+                'Akun Kredit': item.akunKredit,
+                'Kredit (Rp)': item.kredit
+            }));
+            const totalDebit = jurnalData.reduce((sum, item) => sum + item.debit, 0);
+            const totalKredit = jurnalData.reduce((sum, item) => sum + item.kredit, 0);
+            exportData.push({
+                'No': '',
+                'Tanggal': '',
+                'Deskripsi': 'TOTAL',
+                'Akun Debit': '',
+                'Debit (Rp)': totalDebit,
+                'Akun Kredit': '',
+                'Kredit (Rp)': totalKredit
+            });
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Jurnal Umum');
+            const wscols = [{ wch: 5 }, { wch: 12 }, { wch: 40 }, { wch: 25 }, { wch: 15 }, { wch: 25 }, { wch: 15 }];
+            ws['!cols'] = wscols;
+            XLSX.writeFile(wb, `Jurnal_Umum_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showToast('Jurnal berhasil diekspor ke Excel.', 'success');
+        }
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastTitle = toast.querySelector('.toast-title');
+            const toastMessage = toast.querySelector('.toast-message');
+            const toastIcon = toast.querySelector('.toast-icon');
+            toast.className = 'toast ' + type;
+            toastTitle.textContent = type === 'success' ? 'Berhasil' : 'Error';
+            toastMessage.textContent = message;
+            toastIcon.textContent = type === 'success' ? '✓' : '✕';
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+        function showModal(title, message, onConfirm) {
+            document.querySelector('.modal-title').textContent = title;
+            document.querySelector('.modal-message').textContent = message;
+            document.getElementById('modal').classList.add('show');
+            const confirmBtn = document.getElementById('modalConfirm');
+            confirmBtn.onclick = () => { closeModal(); if (onConfirm) onConfirm(); };
+        }
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+        document.getElementById('modal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeModal();
+            if (e.ctrlKey && e.key === 'Enter') tambahTransaksi();
+        });
+        renderTabel();
+        updateSummary();
+    </script>
+</body>
+
+</html>
